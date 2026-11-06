@@ -73,3 +73,8 @@ Electricity bill calculations are estimates and may differ from the actual elect
 Project Purpose
 
 This project demonstrates practical applications of Python programming, database management, data analysis, visualization, and basic machine learning.
+
+
+## Dashboard Preview
+
+![Smart Electricity Usage Analyzer Dashboard](dashboard.png)
