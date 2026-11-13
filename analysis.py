@@ -11,20 +11,29 @@ def calculate_daily_usage(readings):
     )
 
     return readings
-
-
 def calculate_monthly_usage(readings):
-    """Calculate total electricity consumption per month."""
+    """Calculate total electricity consumption separately for each month."""
 
-    readings = calculate_daily_usage(readings)
+    daily_usage = calculate_daily_usage(readings)
 
-    readings["month"] = pd.to_datetime(
-        readings["reading_date"]
-    ).dt.to_period("M")
+    if daily_usage.empty:
+        return pd.DataFrame(columns=["month", "units"])
 
-    monthly_usage = readings.groupby("month")[
-        "daily_usage"
-    ].sum()
+    daily_usage["reading_date"] = pd.to_datetime(
+        daily_usage["reading_date"]
+    )
+
+    daily_usage["month"] = (
+        daily_usage["reading_date"].dt.to_period("M").astype(str)
+    )
+
+    monthly_usage = (
+        daily_usage.groupby("month")["daily_usage"]
+        .sum()
+        .reset_index(name="units")
+    )
+
+    monthly_usage = monthly_usage.sort_values("month")
 
     return monthly_usage
 
